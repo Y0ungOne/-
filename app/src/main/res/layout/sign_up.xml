@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/toolbar" />
+
+        <TextView
+            android:id="@+id/sign_in_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="108dp"
+            android:text="회원가입"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="124dp"
+            android:text="e-mail: "
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/EmailAddress"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_view" />
+
+        <EditText
+            android:id="@+id/EmailAddress"
+            android:layout_width="165dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="96dp"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_view"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/pwd_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Password: "
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/pwd_insert"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/email"
+            app:layout_constraintTop_toBottomOf="@+id/EmailAddress" />
+
+        <TextView
+            android:id="@+id/checking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Checking: "
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/pwd_in"
+            app:layout_constraintTop_toBottomOf="@+id/pwd_insert" />
+
+        <Button
+            android:id="@+id/complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="94dp"
+            android:layout_marginBottom="76dp"
+            android:text="회원가입 완료"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/pwd_check"
+            app:layout_constraintHorizontal_bias="0.446"
+            app:layout_constraintStart_toStartOf="@+id/checking"
+            app:layout_constraintTop_toBottomOf="@+id/checking"
+            app:layout_constraintVertical_bias="0.14" />
+
+        <EditText
+            android:id="@+id/pwd_insert"
+            android:layout_width="162dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="@+id/EmailAddress"
+            app:layout_constraintTop_toBottomOf="@+id/EmailAddress" />
+
+        <EditText
+            android:id="@+id/pwd_check"
+            android:layout_width="161dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="22dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@+id/complete"
+            app:layout_constraintEnd_toEndOf="@+id/pwd_insert"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/checking"
+            app:layout_constraintTop_toBottomOf="@+id/pwd_insert"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/Nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:ems="10"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/complete"
+            app:layout_constraintEnd_toEndOf="@+id/pwd_check"
+            app:layout_constraintHorizontal_bias="0.555"
+            app:layout_constraintStart_toStartOf="@+id/checking"
+            app:layout_constraintTop_toBottomOf="@+id/checking"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

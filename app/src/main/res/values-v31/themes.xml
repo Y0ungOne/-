@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MissingApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Base application theme. -->
+        <!-- Customize your theme here. -->
+        <!-- 안드로이드 12 스플래시 스크린 API 사용 -->
+        <item name="android:windowSplashScreenBackground">@color/intro_background</item>
+        <!-- 선택사항: 스플래시 스크린 아이콘 설정 -->
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/logo</item> <!-- drawable 리소스 참조 -->
+        <!-- 선택사항: 스플래시 스크린 아이콘 배경색 설정 -->
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/intro_animaicon</item>
+        <!-- 선택사항: 스플래시 스크린 애니메이션 지속시간 설정 -->
+        <item name="android:windowSplashScreenAnimationDuration">500</item>
+    </style>
+</resources>
