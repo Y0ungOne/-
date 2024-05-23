@@ -26,10 +26,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize the fragment manager
+
         fragmentManager = getSupportFragmentManager();
 
-        // Set up the BottomNavigationView
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             Intent intent = null;
             int itemId = item.getItemId();
@@ -47,10 +46,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // Set default selection
         binding.bottomNavigation.setSelectedItemId(R.id.navigation_home);
 
-        // Show the decision popup
         showDecisionPopup();
     }
 

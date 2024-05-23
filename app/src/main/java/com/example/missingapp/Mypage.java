@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,12 +14,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.android.congestionobserver.ActivityContainer;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class Mypage extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage); // 레이아웃 설정을 먼저 합니다.
+        setContentView(R.layout.mypage);
 
         // 툴바 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -30,7 +34,7 @@ public class Mypage extends AppCompatActivity {
         }
 
         // 윈도우 인셋 적용
-        View mainLayout = findViewById(R.id.main); // 레이아웃에 정의된 뷰 ID를 사용합니다.
+        View mainLayout = findViewById(R.id.main);
         ViewCompat.setOnApplyWindowInsetsListener(mainLayout, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -48,16 +52,37 @@ public class Mypage extends AppCompatActivity {
             }
         });
 
+        // BottomNavigationView 설정
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                Intent intent = null;
+                if (itemId == R.id.navigation_home) {
+                    intent = new Intent(Mypage.this, MainActivity.class);
+                } else if (itemId == R.id.navigation_people) {
+                    intent = new Intent(Mypage.this, ActivityContainer.class);
+                } else if (itemId == R.id.navigation_mypage) {
+                    return true;
+                }
+                if (intent != null) {
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });
 
+        bottomNavigationView.setSelectedItemId(R.id.navigation_mypage);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                finish(); // 액티비티 종료
-                return true;
-            }
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
