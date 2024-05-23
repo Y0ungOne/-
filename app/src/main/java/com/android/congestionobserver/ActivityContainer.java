@@ -5,7 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.congestionobserver.databinding.ActivityContainerBinding;
+import com.example.missingapp.R;
+import com.example.missingapp.databinding.ActivityContainerBinding;
 
 
 public class ActivityContainer extends AppCompatActivity {
