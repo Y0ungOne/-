@@ -13,13 +13,13 @@
 
     <item
         android:id="@+id/nav_week"
-        android:icon="@drawable/baseline_access_time_24"
+        android:icon="@drawable/baseline_add_week_24"
         android:title="Week" />
 
 
     <item
         android:id="@+id/nav_find"
-        android:icon="@drawable/baseline_add_reaction_24"
-        android:title="Find" />
+        android:icon="@drawable/baseline_hour_24"
+        android:title="Hour" />
 
 </menu>

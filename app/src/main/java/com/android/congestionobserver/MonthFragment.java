@@ -68,25 +68,25 @@ public class MonthFragment extends Fragment {
 
     private void init() {
         getCongestionData();
-
-
-        years.add("2010");
-        years.add("2011");
-        years.add("2012");
-        years.add("2013");
-        years.add("2014");
-        years.add("2015");
-        years.add("2016");
-        years.add("2017");
-        years.add("2018");
-        years.add("2019");
-        years.add("2020");
-        years.add("2021");
-        years.add("2022");
-        years.add("2023");
-        years.add("2024");
-
-        binding.spYear.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, years));
+//
+//
+//        years.add("2010");
+//        years.add("2011");
+//        years.add("2012");
+//        years.add("2013");
+//        years.add("2014");
+//        years.add("2015");
+//        years.add("2016");
+//        years.add("2017");
+//        years.add("2018");
+//        years.add("2019");
+//        years.add("2020");
+//        years.add("2021");
+//        years.add("2022");
+//        years.add("2023");
+//        years.add("2024");
+//
+//        binding.spYear.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, years));
 
 
     }
