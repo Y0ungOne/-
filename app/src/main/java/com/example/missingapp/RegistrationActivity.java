@@ -40,12 +40,12 @@ public class RegistrationActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        /*Button buttonManage = findViewById(R.id.buttonManage);
+        Button buttonManage = findViewById(R.id.buttonManage);
         buttonManage.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), Mypage.class);
+            Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
-        });*/
+        });
     }
 
     @Override

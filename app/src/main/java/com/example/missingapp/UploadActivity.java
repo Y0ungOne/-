@@ -29,7 +29,6 @@ import retrofit2.Response;
 
 public class UploadActivity extends AppCompatActivity {
 
-    private static final String TAG = "UploadActivity";
     private EditText etName, etAge;
     private ImageView ivCapturedImage;
     private String imageFilePath;
@@ -69,15 +68,12 @@ public class UploadActivity extends AppCompatActivity {
         String name = etName.getText().toString();
         int age = Integer.parseInt(etAge.getText().toString());
 
-        // createDto 객체 생성
         CreateDto createDto = new CreateDto(name, age);
 
-        // Gson을 사용하여 createDto 객체를 JSON으로 변환
         Gson gson = new Gson();
         String createDtoJson = gson.toJson(createDto);
         RequestBody requestBodyCreateDto = RequestBody.create(createDtoJson, MediaType.parse("application/json"));
 
-        // 이미지 파일을 1MB 이하로 압축
         File compressedImageFile = compressImageFile(imageFilePath);
 
         if (compressedImageFile == null) {
@@ -104,7 +100,7 @@ public class UploadActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(UploadActivity.this, "이미지 업로드 중 오류 발생", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UploadActivity.this, "이미지 업로드 중 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -112,17 +108,15 @@ public class UploadActivity extends AppCompatActivity {
     private File compressImageFile(String filePath) {
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        int quality = 100; // 초기 품질
+        int quality = 100;
         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
 
-        // 파일 크기가 1MB 이하가 될 때까지 품질을 줄임
         while (outputStream.toByteArray().length / 1024 > 1024) {
             outputStream.reset();
             quality -= 10;
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
         }
 
-        // 압축된 이미지를 파일로 저장
         File compressedFile = new File(getCacheDir(), "compressed_image.jpg");
         try (FileOutputStream fos = new FileOutputStream(compressedFile)) {
             fos.write(outputStream.toByteArray());

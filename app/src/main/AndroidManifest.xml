@@ -90,14 +90,14 @@
         <activity
             android:name=".UploadActivity"
             android:exported="true" />
-        <!--<activity android:name=".PhotoActivity"
+        <activity android:name=".PhotoActivity"
             android:exported="true"
             android:theme="@style/Theme.MissingApp">
         </activity>
         <activity android:name=".PhotoDetailActivity"
             android:exported="true"
             android:theme="@style/Theme.MissingApp">
-        </activity>-->
+        </activity>
     </application>
 
 </manifest>

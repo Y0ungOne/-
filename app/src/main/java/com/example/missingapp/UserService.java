@@ -34,6 +34,7 @@ public interface UserService {
     @DELETE("/member")
     Call<Void> deleteUser();*/
 
+
     @Multipart
     @POST("/protected-target")
     Call<Void> registerProtectedTarget(
@@ -41,8 +42,8 @@ public interface UserService {
             @Part MultipartBody.Part file
     );
 
-    /*@GET("/protected-targets")
-    Call<List<Photo>> getPhotos();
+    @GET("/protected-targets")
+    Call<ProtectedTargetResponse> getPhotos();
 
     @GET("/protected-target/{id}")
     Call<Photo> getPhoto(@Path("id") int id);
@@ -51,7 +52,7 @@ public interface UserService {
     Call<Photo> updatePhoto(@Body Photo photo);
 
     @DELETE("/protected-target/{id}")
-    Call<Void> deletePhoto(@Path("id") int id);*/
+    Call<Void> deletePhoto(@Path("id") int id);
 
 
 }

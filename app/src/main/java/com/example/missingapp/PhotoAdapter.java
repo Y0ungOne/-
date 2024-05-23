@@ -1,58 +1,74 @@
 package com.example.missingapp;
 
-/*import android.content.Context;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class PhotoAdapter extends BaseAdapter {
+public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
 
     private Context context;
-    private List<Photo> photos;
+    private List<ProtectedTargetReadDto> photos;
 
-    public PhotoAdapter(Context context, List<Photo> photos) {
+    public PhotoAdapter(Context context, List<ProtectedTargetReadDto> photos) {
         this.context = context;
         this.photos = photos;
     }
 
     @Override
-    public int getCount() {
+    public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.photo_list_item, parent, false);
+        return new PhotoViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(PhotoViewHolder holder, int position) {
+        ProtectedTargetReadDto photo = photos.get(position);
+        holder.name.setText(photo.getName());
+        holder.age.setText(String.valueOf(photo.getAge()));
+
+        // base64 인코딩된 이미지를 디코딩하여 설정
+        if (photo.getImage() != null && !photo.getImage().isEmpty()) {
+            String base64Image = photo.getImage().get(0);
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            holder.photoView.setImageBitmap(decodedByte);
+        } else {
+            holder.photoView.setImageResource(R.drawable.error); // 에러 이미지 설정
+        }
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PhotoDetailActivity.class);
+            intent.putExtra("photoId", photo.getId());
+            context.startActivity(intent);
+        });
+    }
+
+    @Override
+    public int getItemCount() {
         return photos.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return photos.get(position);
-    }
+    static class PhotoViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView age;
+        ImageView photoView;
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.activity_photo, parent, false);
+        PhotoViewHolder(View itemView) {
+            super(itemView);
+            name = itemView.findViewById(R.id.photoName);
+            age = itemView.findViewById(R.id.photoAge);
+            photoView = itemView.findViewById(R.id.photoView);
         }
-
-        Photo photo = photos.get(position);
-
-        TextView name = convertView.findViewById(R.id.photoName);
-        TextView age = convertView.findViewById(R.id.photoAge);
-        ImageView photoView = convertView.findViewById(R.id.photoView);
-
-        name.setText(photo.getName());
-        age.setText(String.valueOf(photo.getAge()));
-        Glide.with(context).load(photo.getImage().get(0)).into(photoView);
-
-        return convertView;
     }
-}*/
+}

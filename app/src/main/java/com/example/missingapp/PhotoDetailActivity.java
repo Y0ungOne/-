@@ -1,6 +1,6 @@
 package com.example.missingapp;
 
-/*import android.content.Intent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -125,7 +125,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(PhotoDetailActivity.this, "사진이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                    finish(); // 액티비티 종료
+                    finish();
                 } else {
                     Toast.makeText(PhotoDetailActivity.this, "삭제 실패: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
@@ -146,5 +146,5 @@ public class PhotoDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
-*/
