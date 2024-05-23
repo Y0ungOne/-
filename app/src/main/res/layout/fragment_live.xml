@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fffca3">
-
-
+    android:background="#D5FEFFD2">
+    <include
+        layout="@layout/toolbar" />
     <ImageView
         android:id="@+id/im_back"
         android:layout_width="wrap_content"
@@ -51,6 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    style="@style/AppTheme"
                     android:text="현재 위치 : 수원 스타필드 1층"
                     android:textSize="16sp" />
 
@@ -106,6 +107,7 @@
                     android:layout_marginEnd="5dp"
                     android:id="@+id/tv_notify"
                     android:layout_marginBottom="20dp"
+                    style="@style/AppTheme"
                     android:text="현재 1층 입니다."
                     android:textSize="16sp" />
 

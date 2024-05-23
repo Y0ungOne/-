@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/customTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AppTheme"
+        android:text="사진 등록하기"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:lineSpacingExtra="8dp" />
+
+    <TextView
+        android:id="@+id/customMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AppTheme"
+        android:text="추적대상 사진을 등록하시겠습니까?"
+        android:textSize="17sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:lineSpacingExtra="8dp" />
+</LinearLayout>

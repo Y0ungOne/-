@@ -4,5 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="intro_background">#FFED4A</color>
     <color name="intro_animaicon">#EBFF71</color>
+    <color name="yellow">#FFF500</color>
+
+
+
 
 </resources>
