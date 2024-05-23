@@ -3,7 +3,10 @@ package com.example.missingapp;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -52,17 +55,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDecisionPopup() {
+        // AlertDialog 빌더 생성
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("사진 등록하기");
-        builder.setMessage("추적대상 사진을 등록하시겠습니까?");
+
+        // LayoutInflater를 사용하여 커스텀 레이아웃을 인플레이트
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
+        builder.setView(dialogView);
+
+        // 커스텀 타이틀과 메시지 설정
+        TextView customTitle = dialogView.findViewById(R.id.customTitle);
+        TextView customMessage = dialogView.findViewById(R.id.customMessage);
+
+        // 버튼 설정
         builder.setNegativeButton("아니오", (dialog, which) -> dialog.dismiss());
         builder.setPositiveButton("예", (dialog, which) -> {
             Intent intent = new Intent(getApplicationContext(), Mypage.class);
             startActivity(intent);
         });
+
+        // AlertDialog 생성 및 표시
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

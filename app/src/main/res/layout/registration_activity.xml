@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D5FEFFD2"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="#FFF500"
         android:theme="?attr/actionBarTheme" />
 
     <LinearLayout
@@ -20,15 +21,17 @@
 
         <Button
             android:id="@+id/Camera"
+            style="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Open Camera" />
+            android:text="보호대상 촬영하기" />
 
         <Button
             android:id="@+id/buttonManage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Photos"
+            style="@style/AppTheme"
+            android:text="등록된 보호대상 보기"
             android:layout_marginTop="16dp" />
 
     </LinearLayout>

@@ -26,25 +26,12 @@
             <include
                 layout="@layout/toolbar" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="167dp"
-                android:layout_height="155dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="496dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.065"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include"
-                app:layout_constraintVertical_bias="0.048"
-                tools:srcCompat="@tools:sample/avatars[0]" />
-
             <Button
                 android:id="@+id/register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="276dp"
+                android:layout_marginTop="212dp"
+                style="@style/AppTheme"
                 android:text="추적 대상 정보 관리"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,15 +41,14 @@
                 android:id="@+id/edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="55dp"
-                android:layout_marginBottom="304dp"
+                style="@style/AppTheme"
                 android:text="개인정보 수정"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register"
                 app:layout_constraintHorizontal_bias="0.484"
                 app:layout_constraintStart_toStartOf="@+id/register"
                 app:layout_constraintTop_toBottomOf="@+id/register"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.119" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

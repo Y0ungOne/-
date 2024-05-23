@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/textView"
+        style="@style/ExtraBoldText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Missing"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -32,6 +34,7 @@
 
     <TextView
         android:id="@+id/pwd"
+        style="@style/AppTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -45,6 +48,7 @@
 
     <TextView
         android:id="@+id/textView2"
+        style="@style/AppTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
@@ -58,6 +62,7 @@
 
     <EditText
         android:id="@+id/Password"
+        style="@style/AppTheme"
         android:layout_width="134dp"
         android:layout_height="42dp"
         android:layout_marginTop="40dp"
@@ -71,25 +76,32 @@
 
     <Button
         android:id="@+id/login"
+        style="@style/YellowButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
         android:text="로그인"
+        android:textColorLink="#FFF500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.685" />
+        app:layout_constraintVertical_bias="0.702" />
 
     <Button
         android:id="@+id/sign_up"
+        style="@style/YellowButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#FFF500"
         android:text="회원가입하기"
+        android:textColorLink="#FFF500"
+        app:iconPadding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/login"
-        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.685" />
+        app:layout_constraintVertical_bias="0.702" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
