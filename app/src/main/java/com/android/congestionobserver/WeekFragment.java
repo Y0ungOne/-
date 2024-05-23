@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.android.congestionobserver.databinding.FragmentMonthBinding;
-import com.android.congestionobserver.databinding.FragmentWeekBinding;
+import com.example.missingapp.R;
+import com.example.missingapp.databinding.FragmentWeekBinding;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
