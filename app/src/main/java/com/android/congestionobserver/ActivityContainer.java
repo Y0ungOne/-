@@ -23,7 +23,7 @@ public class ActivityContainer extends AppCompatActivity {
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_live) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.activity_container, new LiveFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.activity_container, new LiveFragment()).commit();
             } else if (itemId == R.id.nav_month) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.activity_container, new MonthFragment()).commit();
             } else if (itemId == R.id.nav_week) {
