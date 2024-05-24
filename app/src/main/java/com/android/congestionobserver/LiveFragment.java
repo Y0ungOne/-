@@ -275,7 +275,7 @@ public class LiveFragment extends Fragment {
                         status = "원할";
                         break;
 
-                    case "confuse" :
+                    case "confusion" :
 //                        binding.tvNotify.setText("현재 " + floorList.get(1).getName() + " E구역은 혼잡 구역 입니다");
                         status = "혼잡";
                         break;
