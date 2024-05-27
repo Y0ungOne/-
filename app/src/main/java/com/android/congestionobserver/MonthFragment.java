@@ -1,5 +1,6 @@
 package com.android.congestionobserver;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.missingapp.MainActivity;
 import com.example.missingapp.R;
 import com.example.missingapp.databinding.FragmentMonthBinding;
 import com.github.mikephil.charting.charts.BarChart;
@@ -65,6 +67,13 @@ public class MonthFragment extends Fragment {
 
         init();
         setEvent();
+
+        // 뒤로 가기 버튼 클릭 리스너 추가
+        binding.imBack.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            getActivity().finish(); // 현재 액티비티를 종료하여 뒤로가기 스택을 정리
+        });
     }
 
     private void init() {
