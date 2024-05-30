@@ -2,19 +2,27 @@ package com.example.missingapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.congestionobserver.ActivityContainer;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.missingapp.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -29,6 +37,35 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Button btnExplore = findViewById(R.id.btn_explore);
+        ImageView imageView = findViewById(R.id.imageView);
+        TextView statusText = findViewById(R.id.status_text);
+
+        btnExplore.setOnClickListener(v -> {
+            // 탐색중 텍스트 설정
+            statusText.setText("탐색중");
+
+            // 임시로 더미 이미지 URL 사용
+            String dummyImageUrl = "https://via.placeholder.com/100";
+            Glide.with(this)
+                    .load(dummyImageUrl)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            // 로드 실패 시 텍스트 설정
+                            statusText.setText("탐색 실패");
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            // 로드 성공 시 텍스트 설정
+                            statusText.setText("탐색 완료!");
+                            return false;
+                        }
+                    }).override(1000,1000)
+                    .into(imageView);
+        });
 
         fragmentManager = getSupportFragmentManager();
 
@@ -74,13 +111,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // AlertDialog 생성 및 표시
+
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
