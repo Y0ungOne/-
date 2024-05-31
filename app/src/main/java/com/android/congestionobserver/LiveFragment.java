@@ -50,7 +50,7 @@ public class LiveFragment extends Fragment {
     // 실시간
     private static final String BASE_URL = "http://223.130.152.183:8080/live-congestion?cctvId=";
     private String cctvId = "1";
-    public String status = "원할";
+    public String status = "";
     private int currentFloor = 1;
 
 
@@ -279,7 +279,7 @@ public class LiveFragment extends Fragment {
                 switch (status) {
                     case "normal":
 //                        binding.tvNotify.setText("현재 " + floorList.get(0).getName() + " E구역은 원활 구역 입니다");
-                        status = "원할";
+                        status = "보통";
                         break;
 
                     case "confusion" :
