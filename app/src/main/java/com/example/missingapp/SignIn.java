@@ -29,7 +29,7 @@ public class SignIn extends AppCompatActivity {
         buttonSignIn = findViewById(R.id.login);
         buttonSignUp = findViewById(R.id.sign_up);
 
-        buttonSignIn.setOnClickListener(v -> {
+      /*  buttonSignIn.setOnClickListener(v -> {
             String email = editTextID.getText().toString();
             String password = editTextPassword.getText().toString();
             if (!email.isEmpty() && !password.isEmpty()) {
@@ -42,10 +42,26 @@ public class SignIn extends AppCompatActivity {
         buttonSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(SignIn.this, SignUp.class);
             startActivity(intent);
+        });*/
+        buttonSignIn.setOnClickListener(v -> {
+            // 기존 로그인 검증 과정을 생략하고 바로 MainActivity로 이동
+            navigateToMainActivity();
+        });
+
+        buttonSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(SignIn.this, SignUp.class);
+            startActivity(intent);
         });
     }
 
-    private void signIn(String email, String password) {
+    private void navigateToMainActivity() {
+        Intent intent = new Intent(SignIn.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    }
+
+    /*private void signIn(String email, String password) {
         UserService service = RetrofitClient.getClient("http://223.130.152.183:8080").create(UserService.class);
         LoginRequest loginRequest = new LoginRequest(email, password);
 
@@ -81,3 +97,4 @@ public class SignIn extends AppCompatActivity {
         editor.apply();
     }
 }
+*/
