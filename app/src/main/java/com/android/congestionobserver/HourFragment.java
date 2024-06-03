@@ -1,5 +1,6 @@
 package com.android.congestionobserver;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.missingapp.MainActivity;
 import com.example.missingapp.databinding.FragmentHourBinding;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -55,7 +57,16 @@ public class HourFragment extends Fragment {
         setEvent();
 
         getCongestionData();
+
+        // 뒤로 가기 버튼 클릭 리스너 추가
+        // 뒤로 가기 버튼 클릭 리스너 추가
+        binding.imBack.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            getActivity().finish(); // 현재 액티비티를 종료하여 뒤로가기 스택을 정리
+        });
     }
+
 
 
     List<BarEntry> entries = new ArrayList<>();

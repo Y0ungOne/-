@@ -7,6 +7,15 @@ public class ProtectedTargetReadDto {
     private String name;
     private int age;
     private List<String> image;
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public ProtectedTargetReadDto() {
     }

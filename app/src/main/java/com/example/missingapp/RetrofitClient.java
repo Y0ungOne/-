@@ -12,9 +12,18 @@ public class RetrofitClient {
     private static Retrofit retrofit = null;
     private static final Object lock = new Object();
     private static String baseUrl = "http://223.130.152.183:8080";
+    private static String localBaseUrl = "http://10.0.2.2:8080";
 
     public static Retrofit getClient(String token) {
-        if (retrofit == null || !retrofit.baseUrl().toString().equals(baseUrl)) {
+        return getClient(token, baseUrl);
+    }
+
+    public static Retrofit getLocalClient(String token) {
+        return getClient(token, localBaseUrl);
+    }
+
+    private static Retrofit getClient(String token, String url) {
+        if (retrofit == null || !retrofit.baseUrl().toString().equals(url)) {
             synchronized (lock) {
                 HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
                 loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -35,7 +44,7 @@ public class RetrofitClient {
 
                 retrofit = new Retrofit.Builder()
                         .client(client)
-                        .baseUrl(baseUrl)
+                        .baseUrl(url)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
             }
