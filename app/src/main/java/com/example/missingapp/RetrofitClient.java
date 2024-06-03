@@ -23,31 +23,29 @@ public class RetrofitClient {
     }
 
     private static Retrofit getClient(String token, String url) {
-        if (retrofit == null || !retrofit.baseUrl().toString().equals(url)) {
-            synchronized (lock) {
-                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        synchronized (lock) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .addInterceptor(chain -> {
-                            Request original = chain.request();
-                            Request.Builder requestBuilder = original.newBuilder()
-                                    .header("Authorization", "Bearer " + token); // "Bearer "를 포함한 형식
-                            Request request = requestBuilder.build();
-                            return chain.proceed(request);
-                        })
-                        .addInterceptor(loggingInterceptor)
-                        .connectTimeout(60, TimeUnit.SECONDS)
-                        .readTimeout(60, TimeUnit.SECONDS)
-                        .writeTimeout(60, TimeUnit.SECONDS)
-                        .build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(chain -> {
+                        Request original = chain.request();
+                        Request.Builder requestBuilder = original.newBuilder()
+                                .header("Authorization", "Bearer " + token); // "Bearer "를 포함한 형식
+                        Request request = requestBuilder.build();
+                        return chain.proceed(request);
+                    })
+                    .addInterceptor(loggingInterceptor)
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .build();
 
-                retrofit = new Retrofit.Builder()
-                        .client(client)
-                        .baseUrl(url)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-            }
+            retrofit = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
         }
         return retrofit;
     }

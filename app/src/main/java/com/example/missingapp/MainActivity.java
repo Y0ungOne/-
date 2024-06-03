@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FragmentManager fragmentManager;
     private UserService userService;
+    private String jwtToken = "jwt_token"; // 실제 JWT 토큰을 여기에 설정
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // 로컬 API 사용
-        userService = RetrofitClient.getLocalClient("your_token").create(UserService.class);
+        //jwt token
+        userService = RetrofitClient.getLocalClient(jwtToken).create(UserService.class);
 
         Button btnExplore = findViewById(R.id.btn_explore);
         ImageView imageView = findViewById(R.id.imageView);
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
             // 탐색중 텍스트 설정
             statusText.setText("탐색중");
 
-            // 보호대상 ID로 API 호출
-            String protectedTargetId = "exampleId"; // 이 부분을 실제 ID로 대체
+            // 보호대상 ID를 사용하여 API 호출
+            String protectedTargetId = "exampleId"; // 이 부분을 실제 보호대상 ID로 대체
             searchProtectedTarget(protectedTargetId, statusText, imageView);
         });
 
@@ -91,23 +92,28 @@ public class MainActivity extends AppCompatActivity {
                     statusText.setText("탐색 완료!");
 
                     //응답에서 이미지 URL을 가져와서 Glide로 로드
-                    String imageUrl = response.body().getData().getImageUrl();
-                    Glide.with(MainActivity.this)
-                            .load(imageUrl)
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    statusText.setText("이미지 로드 실패");
-                                    return false;
-                                }
+                    ProtectedTargetReadDto data = response.body().getData();
+                    if (data != null) {
+                        String imageUrl = data.getImageUrl();
+                        Glide.with(MainActivity.this)
+                                .load(imageUrl)
+                                .listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                        statusText.setText("이미지 로드 실패");
+                                        return false;
+                                    }
 
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    return false;
-                                }
-                            })
-//                            .override(1000,1000)
-                            .into(imageView);
+                                    @Override
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                        return false;
+                                    }
+                                })
+                                //.override(1000,1000)
+                                .into(imageView);
+                    } else {
+                        statusText.setText("탐색 실패: 데이터 없음");
+                    }
                 } else {
                     statusText.setText("탐색 실패");
                 }
