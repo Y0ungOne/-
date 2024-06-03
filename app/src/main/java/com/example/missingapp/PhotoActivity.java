@@ -20,7 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PhotoActivity extends AppCompatActivity {
-
+//이거 코드 어떻게 바뀐건지 말해야함
     private static final String TAG = "PhotoActivity";
     private RecyclerView photoRecyclerView;
     private UserService userService;
