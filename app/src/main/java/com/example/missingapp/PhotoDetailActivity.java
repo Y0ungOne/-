@@ -11,14 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 
 public class PhotoDetailActivity extends AppCompatActivity {
 
@@ -53,25 +56,26 @@ public class PhotoDetailActivity extends AppCompatActivity {
             return;
         }
 
-        userService = RetrofitClient.getClient(accessToken).create(UserService.class);
+        // userService = RetrofitClient.getClient(accessToken).create(UserService.class);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("photoId")) {
             photoId = intent.getIntExtra("photoId", -1);
-            loadPhotoDetails(photoId);
+            loadMockPhotoDetails(photoId); // Mock 데이터 로드
         }
 
-        updateButton.setOnClickListener(v -> updatePhoto());
-        deleteButton.setOnClickListener(v -> deletePhoto());
+        updateButton.setOnClickListener(v -> updateMockPhoto()); // Mock 데이터 업데이트
+        deleteButton.setOnClickListener(v -> deleteMockPhoto()); // Mock 데이터 삭제
     }
 
+    /*
     private void loadPhotoDetails(int id) {
-        Call<Photo> call = userService.getPhoto(id);
-        call.enqueue(new Callback<Photo>() {
+        Call<ProtectedTargetReadDto> call = userService.getPhoto(id);
+        call.enqueue(new Callback<ProtectedTargetReadDto>() {
             @Override
-            public void onResponse(Call<Photo> call, Response<Photo> response) {
+            public void onResponse(Call<ProtectedTargetReadDto> call, Response<ProtectedTargetReadDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Photo photo = response.body();
+                    ProtectedTargetReadDto photo = response.body();
                     photoName.setText(photo.getName());
                     photoAge.setText(String.valueOf(photo.getAge()));
 
@@ -81,7 +85,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         photoView.setImageBitmap(decodedByte);
                     } else {
-                        photoView.setImageResource(R.drawable.image_button);
+                        photoView.setImageResource(R.drawable.placeholder_image);
                     }
                 } else {
                     Toast.makeText(PhotoDetailActivity.this, "사진 정보를 가져오지 못했습니다. 상태 코드: " + response.code(), Toast.LENGTH_SHORT).show();
@@ -89,55 +93,69 @@ public class PhotoDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Photo> call, Throwable t) {
+            public void onFailure(Call<ProtectedTargetReadDto> call, Throwable t) {
                 Toast.makeText(PhotoDetailActivity.this, "서버와의 연결에 실패했습니다: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+    */
 
-    private void updatePhoto() {
+    private void loadMockPhotoDetails(int id) {
+        String json = loadJSONFromAsset("protected_targets.json");
+        if (json != null) {
+            Gson gson = new Gson();
+            Type responseType = new TypeToken<ProtectedTargetResponse>() {}.getType();
+            ProtectedTargetResponse response = gson.fromJson(json, responseType);
+            for (ProtectedTargetReadDto photo : response.getProtectedTargetReadDtos()) {
+                if (photo.getId() == id) {
+                    photoName.setText(photo.getName());
+                    photoAge.setText(String.valueOf(photo.getAge()));
+
+                    if (photo.getImage() != null && !photo.getImage().isEmpty()) {
+                        String base64Image = photo.getImage().get(0);
+                        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        photoView.setImageBitmap(decodedByte);
+                    } else {
+                        photoView.setImageResource(R.drawable.error);
+                    }
+                    return;
+                }
+            }
+        } else {
+            Toast.makeText(this, "로컬 JSON 파일을 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String loadJSONFromAsset(String fileName) {
+        String json = null;
+        try {
+            InputStream is = getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    private void updateMockPhoto() {
         String name = photoName.getText().toString();
         int age = Integer.parseInt(photoAge.getText().toString());
 
-        Photo updateRequest = new Photo(photoId, name, age, null);
-        Call<Photo> call = userService.updatePhoto(updateRequest);
-        call.enqueue(new Callback<Photo>() {
-            @Override
-            public void onResponse(Call<Photo> call, Response<Photo> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(PhotoDetailActivity.this, "사진 정보가 업데이트되었습니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(PhotoDetailActivity.this, "업데이트 실패: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Photo> call, Throwable t) {
-                Toast.makeText(PhotoDetailActivity.this, "업데이트 중 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // 실제 서버 없이 업데이트하는 부분
+        Toast.makeText(this, "사진 정보가 업데이트되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    private void deletePhoto() {
-        Call<Void> call = userService.deletePhoto(photoId);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(PhotoDetailActivity.this, "사진이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(PhotoDetailActivity.this, "삭제 실패: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(PhotoDetailActivity.this, "삭제 중 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void deleteMockPhoto() {
+        // 실제 서버 없이 삭제하는 부분
+        Toast.makeText(this, "사진이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+        finish();
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -146,5 +164,4 @@ public class PhotoDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
