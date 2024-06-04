@@ -6,6 +6,7 @@ public class ProtectedTargetReadDto {
     private int id;
     private String name;
     private int age;
+    private String imageFilePath;
     private List<String> image;
     private String imageUrl;
 
@@ -20,11 +21,12 @@ public class ProtectedTargetReadDto {
     public ProtectedTargetReadDto() {
     }
 
-    public ProtectedTargetReadDto(int id, String name, int age, List<String> image) {
+    public ProtectedTargetReadDto(/*int id,*/ String name, int age, /*List<String> image,*/String imageFilePath) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.image = image;
+        this.imageFilePath = imageFilePath;
     }
 
     public int getId() {
@@ -57,5 +59,10 @@ public class ProtectedTargetReadDto {
 
     public void setImage(List<String> image) {
         this.image = image;
+    }
+
+    //임시
+    public String getImageFilePath() {
+        return imageFilePath;
     }
 }

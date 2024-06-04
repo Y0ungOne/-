@@ -45,6 +45,7 @@ public class UploadActivity extends AppCompatActivity {
         ivCapturedImage = findViewById(R.id.iv_captured_image);
         Button btnConfirm = findViewById(R.id.btn_confirm);
 
+
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         accessToken = sharedPreferences.getString("token", null);
 
@@ -61,10 +62,12 @@ public class UploadActivity extends AppCompatActivity {
             ivCapturedImage.setImageBitmap(BitmapFactory.decodeFile(imageFilePath));
         }
 
-        btnConfirm.setOnClickListener(v -> uploadImageToServer());
+        //btnConfirm.setOnClickListener(v -> uploadImageToServer());
+        //임시로 로컬에 저장하기
+        btnConfirm.setOnClickListener(v -> saveImageLocally());
     }
 
-    private void uploadImageToServer() {
+    /*private void uploadImageToServer() {
         String name = etName.getText().toString();
         int age = Integer.parseInt(etAge.getText().toString());
 
@@ -103,6 +106,51 @@ public class UploadActivity extends AppCompatActivity {
                 Toast.makeText(UploadActivity.this, "이미지 업로드 중 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }*/
+    private void saveImageLocally() {
+        String name = etName.getText().toString();
+        int age = Integer.parseInt(etAge.getText().toString());
+
+        File compressedImageFile = compressImageFile(imageFilePath);
+
+        if (compressedImageFile == null) {
+            Toast.makeText(this, "이미지 압축 실패", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            File dataDir = new File(getFilesDir(), "ProtectedTargets");
+            if (!dataDir.exists()) {
+                dataDir.mkdirs();
+            }
+
+            // Save image
+            File imageFile = new File(dataDir, name + "_" + age + "_image.jpg");
+            try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+                Bitmap bitmap = BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+            }
+
+            // Save data
+            CreateDto createDto = new CreateDto(name, age, imageFile.getAbsolutePath());
+            Gson gson = new Gson();
+            String createDtoJson = gson.toJson(createDto);
+            File dataFile = new File(dataDir, name + "_" + age + "_data.json");
+            try (FileOutputStream fos = new FileOutputStream(dataFile)) {
+                fos.write(createDtoJson.getBytes());
+                fos.flush();
+            }
+
+            Toast.makeText(this, "데이터가 어플 내에 저장되었습니다", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "데이터 저장 실패", Toast.LENGTH_SHORT).show();
+        }
+
+        Intent intent = new Intent(UploadActivity.this, PhotoActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     private File compressImageFile(String filePath) {
