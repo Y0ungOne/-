@@ -18,9 +18,15 @@ import java.util.List;
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
 
     private Context context;
-    private List<ProtectedTargetReadDto> photos;
+    /*private List<ProtectedTargetReadDto> photos;*/
 
-    public PhotoAdapter(Context context, List<ProtectedTargetReadDto> photos) {
+    /*public PhotoAdapter(Context context, List<ProtectedTargetReadDto> photos) {
+        this.context = context;
+        this.photos = photos;
+    }*/
+    private List<Photo> photos;
+
+    public PhotoAdapter(Context context, List<Photo> photos) {
         this.context = context;
         this.photos = photos;
     }
@@ -33,7 +39,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
-        ProtectedTargetReadDto photo = photos.get(position);
+        /*ProtectedTargetReadDto photo = photos.get(position);*/
+        Photo photo = photos.get(position);
         holder.name.setText(photo.getName());
         holder.age.setText(String.valueOf(photo.getAge()));
 
