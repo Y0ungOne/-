@@ -30,22 +30,33 @@ public class SignIn extends AppCompatActivity {
         buttonSignUp = findViewById(R.id.sign_up);
 
         buttonSignIn.setOnClickListener(v -> {
-            String email = editTextID.getText().toString();
+            String dummyToken = "dummy_token";
+            saveToken(dummyToken);
+            // 저장된 토큰 로그로 확인
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+            String savedToken = sharedPreferences.getString("token", null);
+            Log.d("SignIn", "Saved token: " + savedToken);
+
+            Intent intent = new Intent(SignIn.this, MainActivity.class);
+            startActivity(intent);
+        });
+        }
+            /*String email = editTextID.getText().toString();
             String password = editTextPassword.getText().toString();
             if (!email.isEmpty() && !password.isEmpty()) {
                 signIn(email, password);
             } else {
                 Toast.makeText(SignIn.this, "입력되지 않은 정보가 남아 있습니다.", Toast.LENGTH_SHORT).show();
-            }
+            }`
         });
 
         buttonSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(SignIn.this, SignUp.class);
             startActivity(intent);
         });
-    }
+    }*/
 
-    private void signIn(String email, String password) {
+    /*private void signIn(String email, String password) {
         UserService service = RetrofitClient.getClient("http://223.130.152.183:8080").create(UserService.class);
         LoginRequest loginRequest = new LoginRequest(email, password);
 
@@ -73,7 +84,7 @@ public class SignIn extends AppCompatActivity {
             }
         });
     }
-
+*/
     private void saveToken(String token) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
