@@ -2,6 +2,7 @@ package com.example.missingapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,16 +38,22 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FragmentManager fragmentManager;
     private UserService userService;
-    private String jwtToken = "jwt_token"; // 실제 JWT 토큰을 여기에 설정
+    private String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        accessToken = sharedPreferences.getString("token", null);
 
+        if (accessToken == null) {
+            Toast.makeText(this, "토큰이 유효하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         //jwt token
-        userService = RetrofitClient.getLocalClient(jwtToken).create(UserService.class);
+        userService = RetrofitClient.getLocalClient(accessToken).create(UserService.class);
 
         Button btnExplore = findViewById(R.id.btn_explore);
         ImageView imageView = findViewById(R.id.imageView);
@@ -56,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             statusText.setText("탐색중");
 
             // 보호대상 ID를 사용하여 API 호출
-            String protectedTargetId = "exampleId"; // 이 부분을 실제 보호대상 ID로 대체
+            int protectedTargetId = 1; // 이 부분을 실제 보호대상 ID로 대체
             searchProtectedTarget(protectedTargetId, statusText, imageView);
         });
 
@@ -84,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         showDecisionPopup();
     }
 
-    private void searchProtectedTarget(String id, TextView statusText, ImageView imageView) {
+    private void searchProtectedTarget(int id, TextView statusText, ImageView imageView) {
         userService.getProtectedTarget(id).enqueue(new Callback<ProtectedTargetResponse>() {
             @Override
             public void onResponse(Call<ProtectedTargetResponse> call, Response<ProtectedTargetResponse> response) {

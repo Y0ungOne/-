@@ -36,7 +36,7 @@ public interface UserService {
     Call<Void> deleteUser();*/
 
     @GET("/detect")
-    Call<ProtectedTargetResponse> getProtectedTarget(@Query("id") String id);
+    Call<ProtectedTargetResponse> getProtectedTarget(@Query("id") int id);
 
     @Multipart
     @POST("/protected-target")

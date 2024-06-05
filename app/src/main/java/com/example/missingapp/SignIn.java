@@ -47,7 +47,7 @@ public class SignIn extends AppCompatActivity {
                 signIn(email, password);
             } else {
                 Toast.makeText(SignIn.this, "입력되지 않은 정보가 남아 있습니다.", Toast.LENGTH_SHORT).show();
-            }
+            }`
         });
 
         buttonSignUp.setOnClickListener(v -> {
