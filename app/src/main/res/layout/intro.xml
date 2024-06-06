@@ -5,20 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Intro"
-    android:background="#0EB1EA">
+    android:background="@drawable/gradient_background">
 
     <TextView
+        android:id="@+id/title"
+        style="@style/AppTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Missing"
-        style="@style/AppTheme"
-        android:textColor="#EEDFDF"
+        android:fontFamily="@font/aclonica"
+        android:text="Guardia"
+        android:textColor="#000000"
+
         android:textSize="80sp"
         android:textStyle="bold"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
