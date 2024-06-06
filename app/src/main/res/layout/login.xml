@@ -8,10 +8,11 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/ExtraBoldText"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Missing"
+        android:fontFamily="@font/aclonica"
+        android:text="Guardia"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
