@@ -37,19 +37,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/AppTheme"
-                android:text="개인정보 수정"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/register"
-                app:layout_constraintHorizontal_bias="0.484"
-                app:layout_constraintStart_toStartOf="@+id/register"
-                app:layout_constraintTop_toBottomOf="@+id/register"
-                app:layout_constraintVertical_bias="0.119" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

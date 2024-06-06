@@ -35,6 +35,12 @@ public class PhotoDetailActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setTitle("어플이름");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setTitle("상세보기");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -140,8 +146,6 @@ public class PhotoDetailActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
