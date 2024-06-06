@@ -36,11 +36,9 @@ public class Mypage extends AppCompatActivity {
         textViewNickName = findViewById(R.id.textViewNickName);
         textViewEmail = findViewById(R.id.textViewEmail);
 
-        //사용자 정보 불러오기
+        // SharedPreferences에서 사용자 정보 불러오기
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String userJson = sharedPreferences.getString("user", null);
-
-        //Mypage 닉네임,email 표시
 
         if (userJson != null) {
             Gson gson = new Gson();

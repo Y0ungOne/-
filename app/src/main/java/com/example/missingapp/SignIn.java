@@ -56,8 +56,10 @@ public class SignIn extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String accessToken = response.body().getAccessToken();
-                    User user = response.body().getUser(); // 사용자 정보 가져오기
-                    saveUser(user); // 사용자 정보 저장
+                    String nickName = response.body().getNickName();
+                    String email = response.body().getEmail();
+                    User user = new User(nickName, email);
+                    saveUser(user);
                     saveToken(accessToken);
 
                     Intent intent = new Intent(SignIn.this, MainActivity.class);
