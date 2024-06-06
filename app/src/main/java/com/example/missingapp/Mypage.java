@@ -32,28 +32,28 @@ public class Mypage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage);
 
-
-        textViewNickName = findViewById(R.id.textViewNickName);
-        textViewEmail = findViewById(R.id.textViewEmail);
-
-        // SharedPreferences에서 사용자 정보 불러오기
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        String userJson = sharedPreferences.getString("user", null);
-
-        if (userJson != null) {
-            Gson gson = new Gson();
-            User user = gson.fromJson(userJson, User.class);
-            if (user != null) {
-                textViewNickName.setText(user.getNickName());
-                textViewEmail.setText(user.getEmail());
-            } else {
-                textViewNickName.setText("error");
-                textViewEmail.setText("error");
-            }
-        } else {
-            textViewNickName.setText("error");
-            textViewEmail.setText("error");
-        }
+//        User email,nickname
+//        textViewNickName = findViewById(R.id.textViewNickName);
+//        textViewEmail = findViewById(R.id.textViewEmail);
+//
+//        // SharedPreferences에서 사용자 정보 불러오기
+//        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+//        String userJson = sharedPreferences.getString("user", null);
+//
+//        if (userJson != null) {
+//            Gson gson = new Gson();
+//            User user = gson.fromJson(userJson, User.class);
+//            if (user != null) {
+//                textViewNickName.setText(user.getNickName());
+//                textViewEmail.setText(user.getEmail());
+//            } else {
+//                textViewNickName.setText("error");
+//                textViewEmail.setText("error");
+//            }
+//        } else {
+//            textViewNickName.setText("error");
+//            textViewEmail.setText("error");
+//        }
 
         // 툴바 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
