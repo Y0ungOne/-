@@ -41,6 +41,7 @@ public class Mypage extends AppCompatActivity {
         String userJson = sharedPreferences.getString("user", null);
 
         //Mypage 닉네임,email 표시
+
         if (userJson != null) {
             Gson gson = new Gson();
             User user = gson.fromJson(userJson, User.class);

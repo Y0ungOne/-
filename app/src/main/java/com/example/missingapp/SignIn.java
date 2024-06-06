@@ -8,12 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignIn extends AppCompatActivity {
-    public static String token = null;
 
     private EditText editTextID;
     private EditText editTextPassword;
@@ -47,7 +47,7 @@ public class SignIn extends AppCompatActivity {
     }
 
     private void signIn(String email, String password) {
-        UserService service = RetrofitClient.getClient("http://192.168.219.111:8080").create(UserService.class);
+        UserService service = RetrofitClient.getClient("http://223.130.152.183:8080").create(UserService.class);
         LoginRequest loginRequest = new LoginRequest(email, password);
 
         Call<LoginResponse> call = service.signIn(loginRequest);
@@ -56,7 +56,8 @@ public class SignIn extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String accessToken = response.body().getAccessToken();
-                    token = accessToken;
+                    User user = response.body().getUser(); // 사용자 정보 가져오기
+                    saveUser(user); // 사용자 정보 저장
                     saveToken(accessToken);
 
                     Intent intent = new Intent(SignIn.this, MainActivity.class);
@@ -74,6 +75,15 @@ public class SignIn extends AppCompatActivity {
                 Toast.makeText(SignIn.this, "네트워크 연결이 불안정합니다. 인터넷 연결을 확인해 주세요.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void saveUser(User user) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String userJson = gson.toJson(user);
+        editor.putString("user", userJson);
+        editor.apply();
     }
 
     private void saveToken(String token) {

@@ -1,18 +1,11 @@
 package com.example.missingapp;
 
 public class LoginResponse {
-    private String grantType;
     private String accessToken;
     private String refreshToken;
+    private User user; // User 객체 포함
 
-    public String getGrantType() {
-        return grantType;
-    }
-
-    public void setGrantType(String grantType) {
-        this.grantType = grantType;
-    }
-
+    // getters and setters
     public String getAccessToken() {
         return accessToken;
     }
@@ -28,6 +21,12 @@ public class LoginResponse {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
-
-
