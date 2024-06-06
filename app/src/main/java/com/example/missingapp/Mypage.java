@@ -43,8 +43,16 @@ public class Mypage extends AppCompatActivity {
         if (userJson != null) {
             Gson gson = new Gson();
             User user = gson.fromJson(userJson, User.class);
-            textViewNickName.setText(user.getNickName());
-            textViewEmail.setText(user.getEmail());
+            if (user != null) {
+                textViewNickName.setText(user.getNickName());
+                textViewEmail.setText(user.getEmail());
+            } else {
+                textViewNickName.setText("error");
+                textViewEmail.setText("error");
+            }
+        } else {
+            textViewNickName.setText("error");
+            textViewEmail.setText("error");
         }
 
         // 툴바 설정
