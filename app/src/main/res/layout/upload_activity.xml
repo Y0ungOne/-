@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="#D5FFFFF0"
     tools:context=".UploadActivity">
 
     <EditText
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name"
+        style="@style/AppTheme"
         android:inputType="textPersonName"
         android:layout_marginBottom="16dp"/>
 
@@ -20,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Age"
+        style="@style/AppTheme"
         android:inputType="number"
         android:layout_marginBottom="16dp"/>
 
@@ -33,8 +36,12 @@
 
     <Button
         android:id="@+id/btn_confirm"
+        android:textColor="#000000"
+        android:backgroundTint="#FFF500"
+        style="@style/AppTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:text="확인"/>
 
 </LinearLayout>

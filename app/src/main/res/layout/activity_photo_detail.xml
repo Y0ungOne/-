@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D5FEFFD2"
+    android:background="#D5FFFFF0"
     tools:context=".PhotoDetailActivity">
 
     <include
@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="#D5FEFFD2"
+        android:background="#D5FFFFF0"
         tools:context=".PhotoDetailActivity">
 
         <ImageView
@@ -38,6 +38,7 @@
         <EditText
             android:id="@+id/photoName"
             android:layout_width="0dp"
+            style="@style/AppTheme"
             android:layout_height="wrap_content"
             android:hint="Name"
             app:layout_constraintTop_toBottomOf="@id/photoView"
@@ -48,6 +49,7 @@
         <EditText
             android:id="@+id/photoAge"
             android:layout_width="0dp"
+            style="@style/AppTheme"
             android:layout_height="wrap_content"
             android:hint="Age"
             app:layout_constraintTop_toBottomOf="@id/photoName"
@@ -60,6 +62,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Update"
+            style="@style/AppTheme"
+            android:textColor="#000000"
+            android:backgroundTint="#FFF500"
             app:layout_constraintTop_toBottomOf="@id/photoAge"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,6 +75,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Delete"
+            style="@style/AppTheme"
+            android:textColor="#000000"
+            android:backgroundTint="#FFF500"
             app:layout_constraintTop_toBottomOf="@id/updateButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,6 +87,8 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
+        style="@style/BottomNavigationStyle"
+        android:background="#FFF9A3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

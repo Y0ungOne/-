@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +24,29 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Mypage extends AppCompatActivity {
 
+    private TextView textViewNickName;
+    private TextView textViewEmail;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage);
+
+
+        textViewNickName = findViewById(R.id.textViewNickName);
+        textViewEmail = findViewById(R.id.textViewEmail);
+
+        //사용자 정보 불러오기
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user", null);
+
+        //Mypage 닉네임,email 표시
+        if (userJson != null) {
+            Gson gson = new Gson();
+            User user = gson.fromJson(userJson, User.class);
+            textViewNickName.setText(user.getNickName());
+            textViewEmail.setText(user.getEmail());
+        }
 
         // 툴바 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -41,15 +65,19 @@ public class Mypage extends AppCompatActivity {
             return insets;
         });
 
-        // 대상 등록 버튼 클릭 이벤트
-        Button buttonRegi = findViewById(R.id.registerButton);
-        buttonRegi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-            }
+
+        Button buttonCam = findViewById(R.id.Camera);
+        buttonCam.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Camera_Activity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
+
+        Button buttonManage = findViewById(R.id.buttonManage);
+        buttonManage.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
         });
 
         // BottomNavigationView 설정
