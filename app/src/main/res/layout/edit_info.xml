@@ -10,13 +10,14 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D5FEFFD2"
+        android:background="#D5FFFFF0"
         tools:context=".MainActivity">
 
         <include layout="@layout/toolbar" />
 
         <TextView
             android:id="@+id/textEmail"
+            style="@style/AppTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -29,6 +30,7 @@
 
         <EditText
             android:id="@+id/editUserName"
+            style="@style/AppTheme"
             android:layout_width="411dp"
             android:layout_height="wrap_content"
             android:hint="회원 이름"
@@ -39,6 +41,7 @@
 
         <EditText
             android:id="@+id/editCurrentPassword"
+            style="@style/AppTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
@@ -51,6 +54,7 @@
 
         <EditText
             android:id="@+id/editNewPassword"
+            style="@style/AppTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -63,6 +67,7 @@
 
         <EditText
             android:id="@+id/editNewPasswordConfirm"
+            style="@style/AppTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
@@ -75,6 +80,7 @@
 
         <Button
             android:id="@+id/buttonUpdate"
+            style="@style/AppTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="정보 수정"

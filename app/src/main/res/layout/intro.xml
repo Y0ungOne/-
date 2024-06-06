@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Missing"
+        style="@style/AppTheme"
         android:textColor="#EEDFDF"
         android:textSize="80sp"
         android:textStyle="bold"

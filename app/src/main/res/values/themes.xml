@@ -28,13 +28,26 @@
 
     <!-- ExtraBold text style -->
     <style name="ExtraBoldText">
-    <item name="android:fontFamily">@font/font_extrabold</item>
+        <item name="android:fontFamily">@font/font_extrabold</item>
     </style>
-    <!--버튼색-->
+
+    <!-- 노란색 버튼들 -->
     <style name="YellowButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">#FFF500</item>
+        <item name="android:background">@drawable/rounded_button</item>
         <item name="android:textColor">#000000</item>
         <item name="android:fontFamily">@font/font_regular</item>
     </style>
+    <!-- 텍스트 버튼-->
+    <style name="TextButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">"#00ff0000"</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:fontFamily">@font/font_regular</item>
 
+    </style>
+    <!-- Bottom Navigation 색상 스타일 -->
+    <style name="BottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="android:fontFamily">@font/font_bold</item>
+        <item name="itemIconTint">#424242</item>
+        <item name="itemTextColor">#424242</item>
+    </style>
 </resources>
