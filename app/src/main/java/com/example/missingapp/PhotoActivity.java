@@ -74,7 +74,7 @@ public class PhotoActivity extends AppCompatActivity {
                     List<ProtectedTargetReadDto> photos = response.body().getProtectedTargetReadDtos();
                     Log.d(TAG, "불러온 사진 수: " + photos.size());
                     for (ProtectedTargetReadDto photo : photos) {
-                        Log.d(TAG, "사진 정보: " + photo.getName() + ", " + photo.getAge() + ", " + photo.getImage());
+                            Log.d(TAG, "사진 정보: " + photo.getName() + ", " + photo.getAge() + ", " + photo.getImage());
                     }
                     if (photos.isEmpty()) {
                         Log.d(TAG, "불러온 사진 데이터가 없습니다.");

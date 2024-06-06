@@ -42,7 +42,7 @@ public class Mypage extends AppCompatActivity {
         });
 
         // 대상 등록 버튼 클릭 이벤트
-        Button buttonRegi = findViewById(R.id.register);
+        Button buttonRegi = findViewById(R.id.registerButton);
         buttonRegi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

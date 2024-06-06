@@ -106,6 +106,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
             public void onResponse(Call<Photo> call, Response<Photo> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(PhotoDetailActivity.this, "사진 정보가 업데이트되었습니다.", Toast.LENGTH_SHORT).show();
+                    loadPhotoDetails(photoId);
                 } else {
                     Toast.makeText(PhotoDetailActivity.this, "업데이트 실패: " + response.code(), Toast.LENGTH_SHORT).show();
                 }

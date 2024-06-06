@@ -1,6 +1,5 @@
 package com.example.missingapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -20,14 +21,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.congestionobserver.ActivityContainer;
-import com.bumptech.glide.Glide;
 import com.example.missingapp.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private UserService userService;
     private String jwtToken;
+    private int selectedTargetId = -1; // 선택된 보호대상 ID를 저장하는 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +62,27 @@ public class MainActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.imageView);
         TextView statusText = findViewById(R.id.status_text);
         TextView infoText = findViewById(R.id.info_text);
+        RadioGroup radioGroup = findViewById(R.id.radio_group);
+
+        // 보호대상 목록 불러와서 라디오 버튼 추가
+        loadProtectedTargets(radioGroup);
 
         btnExplore.setOnClickListener(v -> {
-            // 탐색중 텍스트 설정
-            statusText.setText("탐색중");
-            infoText.setText(""); // 탐색 중에는 정보 텍스트를 비웁니다.
+            // 선택된 보호대상 ID 확인
+            int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+            if (selectedRadioButtonId != -1) {
+                RadioButton selectedRadioButton = findViewById(selectedRadioButtonId);
+                selectedTargetId = Integer.parseInt(selectedRadioButton.getTag().toString());
 
-            // 예제 보호대상 ID를 사용하여 API 호출
-            int protectedTargetId = 1; // 이 부분을 실제 보호대상 ID로 대체
-            searchProtectedTargetImage(protectedTargetId, statusText, imageView, infoText);
+                // 탐색중 텍스트 설정
+                statusText.setText("탐색중");
+                infoText.setText(""); // 탐색 중에는 정보 텍스트를 비웁니다.
+
+                // 선택된 보호대상 ID를 사용하여 API 호출
+                searchProtectedTargetImage(selectedTargetId, statusText, imageView, infoText);
+            } else {
+                Toast.makeText(this, "보호대상을 선택해주세요.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         fragmentManager = getSupportFragmentManager();
@@ -94,6 +107,30 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setSelectedItemId(R.id.navigation_home);
 
         showDecisionPopup();
+    }
+
+    private void loadProtectedTargets(RadioGroup radioGroup) {
+        userService.getPhotos().enqueue(new Callback<ProtectedTargetResponse>() {
+            @Override
+            public void onResponse(Call<ProtectedTargetResponse> call, Response<ProtectedTargetResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<ProtectedTargetReadDto> targets = response.body().getProtectedTargetReadDtos();
+                    for (ProtectedTargetReadDto target : targets) {
+                        RadioButton radioButton = new RadioButton(MainActivity.this);
+                        radioButton.setText(target.getName());
+                        radioButton.setTag(target.getId());
+                        radioGroup.addView(radioButton);
+                    }
+                } else {
+                    Log.e("MainActivity", "보호대상 목록 불러오기 실패: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProtectedTargetResponse> call, Throwable t) {
+                Log.e("MainActivity", "보호대상 목록 API 호출 실패", t);
+            }
+        });
     }
 
     private void searchProtectedTargetImage(int id, TextView statusText, ImageView imageView, TextView infoText) {
