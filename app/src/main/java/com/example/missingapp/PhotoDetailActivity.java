@@ -127,11 +127,10 @@ public class PhotoDetailActivity extends AppCompatActivity {
 
     private void deletePhoto() {
         ProtectedTargetDeleteDto deleteDto = new ProtectedTargetDeleteDto(photoId);
-
-        Call<Long> call = userService.deletePhoto(deleteDto);
-        call.enqueue(new Callback<Long>() {
+        Call<Void> call = userService.deletePhoto(deleteDto);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Long> call, Response<Long> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(PhotoDetailActivity.this, "사진이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     finish();
@@ -141,7 +140,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Long> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(PhotoDetailActivity.this, "삭제 중 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

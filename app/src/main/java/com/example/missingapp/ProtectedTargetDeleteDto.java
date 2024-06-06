@@ -1,17 +1,17 @@
 package com.example.missingapp;
 
 public class ProtectedTargetDeleteDto {
-    private int id;
+    private int protectedTargetId;
 
     public ProtectedTargetDeleteDto(int id) {
-        this.id = id;
+        this.protectedTargetId = id;
     }
 
     public int getId() {
-        return id;
+        return protectedTargetId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.protectedTargetId = id;
     }
 }
