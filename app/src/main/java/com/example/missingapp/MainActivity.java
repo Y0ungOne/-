@@ -1,8 +1,10 @@
 package com.example.missingapp;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,22 +13,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.congestionobserver.ActivityContainer;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.missingapp.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FragmentManager fragmentManager;
     private UserService userService;
-    private String jwtToken = "jwt_token"; // 실제 JWT 토큰을 여기에 설정
+    private String jwtToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +46,30 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //jwt token
+        // 토큰 불러오기
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        jwtToken = sharedPreferences.getString("token", null);
+
+        if (jwtToken == null) {
+            Toast.makeText(this, "토큰이 유효하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         userService = RetrofitClient.getLocalClient(jwtToken).create(UserService.class);
 
         Button btnExplore = findViewById(R.id.btn_explore);
         ImageView imageView = findViewById(R.id.imageView);
         TextView statusText = findViewById(R.id.status_text);
+        TextView infoText = findViewById(R.id.info_text);
 
         btnExplore.setOnClickListener(v -> {
             // 탐색중 텍스트 설정
             statusText.setText("탐색중");
+            infoText.setText(""); // 탐색 중에는 정보 텍스트를 비웁니다.
 
-            // 보호대상 ID를 사용하여 API 호출
-            String protectedTargetId = "exampleId"; // 이 부분을 실제 보호대상 ID로 대체
-            searchProtectedTarget(protectedTargetId, statusText, imageView);
+            // 예제 보호대상 ID를 사용하여 API 호출
+            int protectedTargetId = 1; // 이 부분을 실제 보호대상 ID로 대체
+            searchProtectedTargetImage(protectedTargetId, statusText, imageView, infoText);
         });
 
         fragmentManager = getSupportFragmentManager();
@@ -84,47 +96,105 @@ public class MainActivity extends AppCompatActivity {
         showDecisionPopup();
     }
 
-    private void searchProtectedTarget(String id, TextView statusText, ImageView imageView) {
-        userService.getProtectedTarget(id).enqueue(new Callback<ProtectedTargetResponse>() {
+    private void searchProtectedTargetImage(int id, TextView statusText, ImageView imageView, TextView infoText) {
+        userService.getProtectedTargetImage(id).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ProtectedTargetResponse> call, Response<ProtectedTargetResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                    statusText.setText("탐색 완료!");
-
-                    //응답에서 이미지 URL을 가져와서 Glide로 로드
-                    ProtectedTargetReadDto data = response.body().getData();
-                    if (data != null) {
-                        String imageUrl = data.getImageUrl();
-                        Glide.with(MainActivity.this)
-                                .load(imageUrl)
-                                .listener(new RequestListener<Drawable>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        statusText.setText("이미지 로드 실패");
-                                        return false;
-                                    }
-
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                        return false;
-                                    }
-                                })
-                                //.override(1000,1000)
-                                .into(imageView);
-                    } else {
-                        statusText.setText("탐색 실패: 데이터 없음");
-                    }
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    new Thread(() -> {
+                        boolean isSaved = saveResponseBodyToDisk(response.body());
+                        runOnUiThread(() -> {
+                            if (isSaved) {
+                                statusText.setText("탐색 완료!");
+                                File imgFile = new File(getExternalFilesDir(null) + File.separator + "result.jpg");
+                                if (imgFile.exists()) {
+                                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                                    imageView.setImageBitmap(bitmap);
+                                    // 이미지 로드 후 추가 정보를 가져와서 표시합니다.
+                                    getDetectInfo(infoText);
+                                }
+                            } else {
+                                statusText.setText("이미지 저장 실패");
+                                Log.e("MainActivity", "이미지 저장 실패");
+                            }
+                        });
+                    }).start();
                 } else {
                     statusText.setText("탐색 실패");
+                    Log.e("MainActivity", "탐색 실패: " + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<ProtectedTargetResponse> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 statusText.setText("탐색 실패");
                 Log.e("MainActivity", "API 호출 실패", t);
             }
         });
+    }
+
+    private void getDetectInfo(TextView infoText) {
+        userService.getDetectInfo().enqueue(new Callback<String[]>() {
+            @Override
+            public void onResponse(Call<String[]> call, Response<String[]> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String[] info = response.body();
+                    infoText.setText("Section: " + info[1] + ", Floor: " + info[0]);
+                } else {
+                    infoText.setText("정보를 불러오지 못했습니다.");
+                    Log.e("MainActivity", "정보 불러오기 실패: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String[]> call, Throwable t) {
+                infoText.setText("정보 불러오기 실패");
+                Log.e("MainActivity", "API 호출 실패", t);
+            }
+        });
+    }
+
+    private boolean saveResponseBodyToDisk(ResponseBody body) {
+        try {
+            File futureStudioIconFile = new File(getExternalFilesDir(null) + File.separator + "result.jpg");
+            InputStream inputStream = null;
+            FileOutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(futureStudioIconFile);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+                    fileSizeDownloaded += read;
+
+                    Log.d("MainActivity", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     private void showDecisionPopup() {

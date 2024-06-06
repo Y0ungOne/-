@@ -4,6 +4,7 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -36,7 +37,7 @@ public interface UserService {
     Call<Void> deleteUser();*/
 
     @GET("/detect")
-    Call<ProtectedTargetResponse> getProtectedTarget(@Query("id") String id);
+    Call<ResponseBody> getProtectedTargetImage(@Query("targetId") int targetId);
 
     @Multipart
     @POST("/protected-target")
@@ -48,16 +49,17 @@ public interface UserService {
     @GET("/protected-targets")
     Call<ProtectedTargetResponse> getPhotos();
 
-    @GET("/protected-target/{id}")
-    Call<Photo> getPhoto(@Path("id") int id);
+    @GET("/protected-target")
+    Call<Photo> getPhoto(@Query("protectedTargetId") int id);
 
     @PATCH("/protected-target")
     Call<Photo> updatePhoto(@Body Photo photo);
 
-    @DELETE("/protected-target/{id}")
-    Call<Void> deletePhoto(@Path("id") int id);
+    @DELETE("/protected-target")
+    Call<Long> deletePhoto(@Body ProtectedTargetDeleteDto deleteDto);
 
-
+    @GET("detect-info")
+    Call<String[]> getDetectInfo();
 }
 
 

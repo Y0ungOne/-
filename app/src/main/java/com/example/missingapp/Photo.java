@@ -1,29 +1,27 @@
 package com.example.missingapp;
 
-import java.util.List;
-
 public class Photo {
-    private int id;
+    private int protectedTargetId;
     private String name;
     private int age;
-    private List<String> image;
+    private String image;
 
     public Photo() {
     }
 
-    public Photo(int id, String name, int age, List<String> image) {
-        this.id = id;
+    public Photo(int id, String name, int age, String image) {
+        this.protectedTargetId = id;
         this.name = name;
         this.age = age;
         this.image = image;
     }
 
     public int getId() {
-        return id;
+        return protectedTargetId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.protectedTargetId = id;
     }
 
     public String getName() {
@@ -42,11 +40,11 @@ public class Photo {
         this.age = age;
     }
 
-    public List<String> getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(List<String> image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

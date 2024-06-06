@@ -57,7 +57,7 @@ public class SignUp extends AppCompatActivity {
             return;
         }
 
-        UserService service = RetrofitClient.getClient("http://223.130.152.183:8080").create(UserService.class);
+        UserService service = RetrofitClient.getClient("http://192.168.219.111:8080").create(UserService.class);
         User request = new User(editNickname.getText().toString().trim(), editTextEmail.getText().toString().trim(), editTextPassword.getText().toString().trim(), "user");
 
 

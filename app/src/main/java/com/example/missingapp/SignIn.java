@@ -13,6 +13,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignIn extends AppCompatActivity {
+    public static String token = null;
 
     private EditText editTextID;
     private EditText editTextPassword;
@@ -30,18 +31,7 @@ public class SignIn extends AppCompatActivity {
         buttonSignUp = findViewById(R.id.sign_up);
 
         buttonSignIn.setOnClickListener(v -> {
-            String dummyToken = "dummy_token";
-            saveToken(dummyToken);
-            // 저장된 토큰 로그로 확인
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-            String savedToken = sharedPreferences.getString("token", null);
-            Log.d("SignIn", "Saved token: " + savedToken);
-
-            Intent intent = new Intent(SignIn.this, MainActivity.class);
-            startActivity(intent);
-        });
-        }
-            /*String email = editTextID.getText().toString();
+            String email = editTextID.getText().toString();
             String password = editTextPassword.getText().toString();
             if (!email.isEmpty() && !password.isEmpty()) {
                 signIn(email, password);
@@ -54,10 +44,10 @@ public class SignIn extends AppCompatActivity {
             Intent intent = new Intent(SignIn.this, SignUp.class);
             startActivity(intent);
         });
-    }*/
+    }
 
-    /*private void signIn(String email, String password) {
-        UserService service = RetrofitClient.getClient("http://223.130.152.183:8080").create(UserService.class);
+    private void signIn(String email, String password) {
+        UserService service = RetrofitClient.getClient("http://192.168.219.111:8080").create(UserService.class);
         LoginRequest loginRequest = new LoginRequest(email, password);
 
         Call<LoginResponse> call = service.signIn(loginRequest);
@@ -66,6 +56,7 @@ public class SignIn extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String accessToken = response.body().getAccessToken();
+                    token = accessToken;
                     saveToken(accessToken);
 
                     Intent intent = new Intent(SignIn.this, MainActivity.class);
@@ -84,7 +75,7 @@ public class SignIn extends AppCompatActivity {
             }
         });
     }
-*/
+
     private void saveToken(String token) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

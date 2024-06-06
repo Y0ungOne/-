@@ -39,7 +39,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
         // base64 인코딩된 이미지를 디코딩하여 설정
         if (photo.getImage() != null && !photo.getImage().isEmpty()) {
-            String base64Image = photo.getImage().get(0);
+            String base64Image = photo.getImage();
             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             holder.photoView.setImageBitmap(decodedByte);

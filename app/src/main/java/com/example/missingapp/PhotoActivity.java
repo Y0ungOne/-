@@ -60,17 +60,12 @@ public class PhotoActivity extends AppCompatActivity {
 
         userService = RetrofitClient.getClient(accessToken).create(UserService.class);
 
-        //loadPhotos();
+        loadPhotos();
 
-        //임시
-        photoList = loadLocalData();
 
-        photoAdapter = new PhotoAdapter(this, photoList);
-        photoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        photoRecyclerView.setAdapter(photoAdapter);
     }
 
-    /*private void loadPhotos() {
+    private void loadPhotos() {
         Call<ProtectedTargetResponse> call = userService.getPhotos();
         call.enqueue(new Callback<ProtectedTargetResponse>() {
             @Override
@@ -107,33 +102,6 @@ public class PhotoActivity extends AppCompatActivity {
                 Log.e(TAG, "사진 목록을 불러오는 중 오류 발생", t);
             }
         });
-    }*/
-    private List<ProtectedTargetReadDto> loadLocalData() {
-        List<ProtectedTargetReadDto> photos = new ArrayList<>();
-        File dataDir = new File(getFilesDir(), "ProtectedTargets");
-        if (dataDir.exists() && dataDir.isDirectory()) {
-            File[] dataFiles = dataDir.listFiles((dir, name) -> name.endsWith("_data.json"));
-            if (dataFiles != null) {
-                Gson gson = new Gson();
-                for (File dataFile : dataFiles) {
-                    try (FileInputStream fis = new FileInputStream(dataFile);
-                         Scanner scanner = new Scanner(fis)) {
-                        StringBuilder json = new StringBuilder();
-                        while (scanner.hasNextLine()) {
-                            json.append(scanner.nextLine());
-                        }
-                        Type type = new TypeToken<CreateDto>() {}.getType();
-                        CreateDto createDto = gson.fromJson(json.toString(), type);
-                        photos.add(new ProtectedTargetReadDto(createDto.getName(), createDto.getAge(), createDto.getImageFilePath()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            Log.e(TAG, "데이터 디렉토리가 존재하지 않습니다.");
-        }
-        return photos;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

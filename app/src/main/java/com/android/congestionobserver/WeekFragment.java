@@ -48,7 +48,7 @@ public class WeekFragment extends Fragment {
 //    private ArrayList<RadioData> weekList = new ArrayList<>();
 
     // 실시간
-    private static final String BASE_URL = "http://223.130.152.183:8080/day-of-week-congestion?cctvId=";
+    private static final String BASE_URL = "http://192.168.219.111:8080/day-of-week-congestion?cctvId=";
     private String cctvId = "1";
 
     @Nullable

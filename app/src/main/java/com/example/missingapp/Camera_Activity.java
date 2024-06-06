@@ -97,7 +97,7 @@ public class Camera_Activity extends AppCompatActivity {
                 Log.e(TAG, "Photo file is null");
             }
         } else {
-            Log.e(TAG, "No activity found to handle camera intent");
+            Log.e(TAG, "No activity found to handle camera intent. Ensure a camera application is installed.");
         }
     }
 

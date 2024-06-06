@@ -41,7 +41,7 @@ import java.util.List;
 
 public class HourFragment extends Fragment {
     FragmentHourBinding binding;
-    private static final String BASE_URL = "http://223.130.152.183:8080/hourly-congestion?cctvId=1";
+    private static final String BASE_URL = "http://192.168.219.111:8080/hourly-congestion?cctvId=1";
 
     @Nullable
     @Override

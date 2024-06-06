@@ -76,7 +76,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
                     photoAge.setText(String.valueOf(photo.getAge()));
 
                     if (photo.getImage() != null && !photo.getImage().isEmpty()) {
-                        String base64Image = photo.getImage().get(0);
+                        String base64Image = photo.getImage();
                         byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         photoView.setImageBitmap(decodedByte);
@@ -119,10 +119,12 @@ public class PhotoDetailActivity extends AppCompatActivity {
     }
 
     private void deletePhoto() {
-        Call<Void> call = userService.deletePhoto(photoId);
-        call.enqueue(new Callback<Void>() {
+        ProtectedTargetDeleteDto deleteDto = new ProtectedTargetDeleteDto(photoId);
+
+        Call<Long> call = userService.deletePhoto(deleteDto);
+        call.enqueue(new Callback<Long>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<Long> call, Response<Long> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(PhotoDetailActivity.this, "사진이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     finish();
@@ -132,11 +134,13 @@ public class PhotoDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<Long> call, Throwable t) {
                 Toast.makeText(PhotoDetailActivity.this, "삭제 중 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
