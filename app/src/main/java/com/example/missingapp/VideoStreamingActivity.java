@@ -1,15 +1,11 @@
 package com.example.missingapp;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.OkHttpClient;
@@ -18,59 +14,26 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
-public class MainActivity extends AppCompatActivity {
+public class VideoStreamingActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "VideoStreamingActivity";
     private WebSocket webSocket;
     private OkHttpClient client;
-    private String jwtToken;
-    private int selectedTargetId = -1;
-    private ImageView imageView;
-    private TextView statusText, infoText;
     //private String webSocketUrl = "ws://server.com/"; // 실제 서버 URL로 변경
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_video_streaming);
 
-        // UI 요소 초기화
         imageView = findViewById(R.id.imageView);
-        statusText = findViewById(R.id.status_text);
-        infoText = findViewById(R.id.info_text);
-        RadioGroup radioGroup = findViewById(R.id.radio_group);
-        Button btnExplore = findViewById(R.id.btn_explore);
 
-        // SharedPreferences에서 토큰 로드
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        jwtToken = sharedPreferences.getString("token", null);
-
-        if (jwtToken == null) {
-            Toast.makeText(this, "토큰이 유효하지 않습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // 탐색 버튼 클릭 이벤트
-        btnExplore.setOnClickListener(v -> {
-            int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
-            if (selectedRadioButtonId != -1) {
-                RadioButton selectedRadioButton = findViewById(selectedRadioButtonId);
-                selectedTargetId = Integer.parseInt(selectedRadioButton.getTag().toString());
-
-                // 상태 텍스트 업데이트
-                statusText.setText("탐색중");
-                infoText.setText("");
-
-                // 웹소켓 연결을 통해 영상 수신 시작
-                connectWebSocket();
-            } else {
-                Toast.makeText(this, "보호대상을 선택해주세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        client = new OkHttpClient();
+        connectWebSocket();
     }
 
     private void connectWebSocket() {
-        client = new OkHttpClient();
         Request request = new Request.Builder().url(webSocketUrl).build();
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
@@ -81,8 +44,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMessage(WebSocket webSocket, ByteString bytes) {
                 runOnUiThread(() -> {
+                    // 수신된 바이너리 데이터를 이미지로 변환
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.size());
-                    imageView.setImageBitmap(bitmap);
+                    if (bitmap != null) {
+                        // 기존 Bitmap을 재활용하여 메모리 누수를 방지합니다.
+                        if (imageView.getDrawable() != null && imageView.getDrawable() instanceof BitmapDrawable) {
+                            Bitmap oldBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                            if (oldBitmap != null && !oldBitmap.isRecycled()) {
+                                oldBitmap.recycle();
+                            }
+                        }
+                        // ImageView에 새 이미지 설정
+                        imageView.setImageBitmap(bitmap);
+                    } else {
+                        Log.e(TAG, "이미지 변환 실패");
+                    }
                 });
             }
 
@@ -100,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
                 Log.e(TAG, "WebSocket 오류: " + t.getMessage());
+                runOnUiThread(() -> {
+                    Toast.makeText(VideoStreamingActivity.this, "연결 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VideoStreamingActivity.this, "재연결 시도 중...", Toast.LENGTH_SHORT).show();
+                });
+
+                // 재연결 시도 (예: 5초 후)
+                new android.os.Handler().postDelayed(VideoStreamingActivity.this::connectWebSocket, 5000);
             }
         });
     }
