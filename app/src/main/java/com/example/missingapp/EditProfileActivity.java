@@ -1,8 +1,8 @@
 package com.example.missingapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,9 +22,9 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_info);  // 기존 edit_info 레이아웃을 사용
+        setContentView(R.layout.edit_info);  // edit_info.xml 사용
 
-        // 토큰 불러오기
+        // JWT 토큰 가져오기
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         jwtToken = sharedPreferences.getString("token", null);
 
@@ -53,15 +53,23 @@ public class EditProfileActivity extends AppCompatActivity {
             String newPassword = editNewPassword.getText().toString();
             String newPasswordConfirm = editNewPasswordConfirm.getText().toString();
 
-            if (newPassword.equals(newPasswordConfirm)) {
-                updateUserInfo(userName, currentPassword, newPassword);
-            } else {
-                Toast.makeText(this, "새 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+            // 입력한 새 비밀번호와 확인 비밀번호가 일치하는지 확인
+            if (!newPassword.equals(newPasswordConfirm)) {
+                Toast.makeText(this, "새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // 새 비밀번호가 현재 비밀번호와 다른지 확인
+            if (newPassword.equals(currentPassword)) {
+                Toast.makeText(this, "새 비밀번호는 현재 비밀번호와 달라야 합니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // 서버로 비밀번호와 닉네임 업데이트 요청
+            updateUserInfo(userName, currentPassword, newPassword);
         });
     }
 
-    // 서버에서 사용자 정보를 불러오는 메서드
     private void loadUserInfo() {
         userService.getUserProfile().enqueue(new Callback<UserProfileResponse>() {
             @Override
@@ -82,7 +90,6 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    // 서버에 사용자 정보 업데이트 요청을 보내는 메서드
     private void updateUserInfo(String userName, String currentPassword, String newPassword) {
         // 닉네임 업데이트
         NickNameUpdate nickNameUpdate = new NickNameUpdate(userName);
@@ -107,8 +114,13 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditProfileActivity.this, "정보가 성공적으로 업데이트되었습니다.", Toast.LENGTH_SHORT).show();
+                    // MyPage로 이동
+                    Intent intent = new Intent(EditProfileActivity.this, Mypage.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                 } else {
-                    Toast.makeText(EditProfileActivity.this, "비밀번호 업데이트 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, "현재 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
