@@ -32,6 +32,7 @@ public class Mypage extends AppCompatActivity {
 
     private TextView textViewNickName;
     private TextView textViewEmail;
+    private Button buttonWithdraw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class Mypage extends AppCompatActivity {
                 deleteUserAccount();
             }
         });
+
 
         if (userJson != null) {
             Gson gson = new Gson();
@@ -76,32 +78,6 @@ public class Mypage extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setTitle("어플이름");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-// 탈퇴 기능 구현
-        private void deleteUserAccount() {
-            UserService service = RetrofitClient.getClient("http://192.168.219.111:8080").create(UserService.class);
-
-            Call<Void> call = service.deleteUser();
-            call.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(Mypage.this, "탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                        // 탈퇴 완료 후 로그인 화면으로 이동
-                        Intent intent = new Intent(Mypage.this, SignIn.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(Mypage.this, "탈퇴 실패: " + response.message(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(Mypage.this, "네트워크 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
 
         // 윈도우 인셋 적용
@@ -153,6 +129,34 @@ public class Mypage extends AppCompatActivity {
 
         // 현재 탭 선택
         bottomNavigationView.setSelectedItemId(R.id.navigation_mypage);
+    }
+
+
+    // 탈퇴하기 구현
+    private void deleteUserAccount() {
+        UserService service = RetrofitClient.getClient("http://192.168.219.111:8080").create(UserService.class);
+
+        Call<Void> call = service.deleteUser();
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(Mypage.this, "탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    // 탈퇴 완료 후 로그인 화면으로 이동
+                    Intent intent = new Intent(Mypage.this, SignIn.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(Mypage.this, "탈퇴 실패: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(Mypage.this, "네트워크 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
