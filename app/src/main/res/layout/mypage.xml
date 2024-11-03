@@ -36,32 +36,43 @@
                 android:layout_height="match_parent"
                 tools:context=".MainActivity">
 
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewNickName"-->
-<!--                    style="@style/AppTheme"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="50dp"-->
-<!--                    android:layout_marginTop="60dp"-->
-<!--                    android:text="NickName"-->
-<!--                    android:textSize="18sp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintHorizontal_bias="0.0"-->
-<!--                    app:layout_constraintStart_toEndOf="@+id/profileImage"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+                <TextView
+                    android:id="@+id/textViewNickName"
+                    style="@style/AppTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="60dp"
+                    android:text="NickName"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/profileImage"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewEmail"-->
-<!--                    style="@style/AppTheme"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginBottom="316dp"-->
-<!--                    android:text="Email"-->
-<!--                    android:textSize="16sp"-->
-<!--                    app:layout_constraintBottom_toTopOf="@+id/Camera"-->
-<!--                    app:layout_constraintEnd_toEndOf="@+id/textViewNickName"-->
-<!--                    app:layout_constraintHorizontal_bias="0.043"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/textViewNickName" />-->
+                <TextView
+                    android:id="@+id/textViewEmail"
+                    style="@style/AppTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="316dp"
+                    android:text="Email"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/Camera"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewNickName"
+                    app:layout_constraintHorizontal_bias="0.043"
+                    app:layout_constraintStart_toStartOf="@+id/textViewNickName" />
+
+
+                <Button
+                    android:id="@+id/buttonEditProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="180dp"
+                    android:layout_marginTop="24dp"
+                    android:text="회원정보 수정"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewEmail" />
 
                 <ImageView
                     android:id="@+id/profileImage"
@@ -100,6 +111,14 @@
                     app:layout_constraintEnd_toEndOf="@+id/Camera"
                     app:layout_constraintStart_toStartOf="@+id/Camera"
                     app:layout_constraintTop_toBottomOf="@+id/Camera" />
+                <Button
+                    android:id="@+id/buttonDeleteAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="계정 삭제하기"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/buttonManage" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

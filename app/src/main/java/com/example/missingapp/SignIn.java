@@ -31,7 +31,12 @@ public class SignIn extends AppCompatActivity {
         buttonSignUp = findViewById(R.id.sign_up);
 
         buttonSignIn.setOnClickListener(v -> {
-            String email = editTextID.getText().toString();
+
+
+
+
+
+           String email = editTextID.getText().toString();
             String password = editTextPassword.getText().toString();
             if (!email.isEmpty() && !password.isEmpty()) {
                 signIn(email, password);

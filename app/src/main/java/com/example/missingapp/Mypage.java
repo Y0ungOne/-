@@ -28,32 +28,32 @@ public class Mypage extends AppCompatActivity {
     private TextView textViewEmail;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage);
 
-//        User email,nickname
-//        textViewNickName = findViewById(R.id.textViewNickName);
-//        textViewEmail = findViewById(R.id.textViewEmail);
-//
-//        // SharedPreferences에서 사용자 정보 불러오기
-//        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-//        String userJson = sharedPreferences.getString("user", null);
-//
-//        if (userJson != null) {
-//            Gson gson = new Gson();
-//            User user = gson.fromJson(userJson, User.class);
-//            if (user != null) {
-//                textViewNickName.setText(user.getNickName());
-//                textViewEmail.setText(user.getEmail());
-//            } else {
-//                textViewNickName.setText("error");
-//                textViewEmail.setText("error");
-//            }
-//        } else {
-//            textViewNickName.setText("error");
-//            textViewEmail.setText("error");
-//        }
+        // 닉네임 및 이메일 TextView 초기화
+        textViewNickName = findViewById(R.id.textViewNickName);
+        textViewEmail = findViewById(R.id.textViewEmail);
+
+        // SharedPreferences에서 사용자 정보 불러오기
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user", null);
+
+        if (userJson != null) {
+            Gson gson = new Gson();
+            User user = gson.fromJson(userJson, User.class);
+            if (user != null) {
+                textViewNickName.setText(user.getNickName());
+                textViewEmail.setText(user.getEmail());
+            } else {
+                textViewNickName.setText("닉네임 로드 실패");
+                textViewEmail.setText("이메일 로드 실패");
+            }
+        } else {
+            textViewNickName.setText("닉네임 없음");
+            textViewEmail.setText("이메일 없음");
+        }
 
         // 툴바 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -72,44 +72,46 @@ public class Mypage extends AppCompatActivity {
             return insets;
         });
 
+        // 버튼 초기화 및 클릭 리스너 설정
+        Button buttonEditProfile = findViewById(R.id.buttonEditProfile);
+        buttonEditProfile.setOnClickListener(view -> {
+            Intent intent = new Intent(Mypage.this, EditProfileActivity.class);
+            startActivity(intent);
+        });
 
         Button buttonCam = findViewById(R.id.Camera);
         buttonCam.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), Camera_Activity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            Intent intent = new Intent(Mypage.this, Camera_Activity.class);
             startActivity(intent);
         });
 
         Button buttonManage = findViewById(R.id.buttonManage);
         buttonManage.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            Intent intent = new Intent(Mypage.this, PhotoActivity.class);
             startActivity(intent);
         });
 
         // BottomNavigationView 설정
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                Intent intent = null;
-                if (itemId == R.id.navigation_home) {
-                    intent = new Intent(Mypage.this, MainActivity.class);
-                } else if (itemId == R.id.navigation_people) {
-                    intent = new Intent(Mypage.this, ActivityContainer.class);
-                } else if (itemId == R.id.navigation_mypage) {
-                    return true;
-                }
-                if (intent != null) {
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                    return true;
-                }
-                return false;
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            Intent intent = null;
+            if (itemId == R.id.navigation_home) {
+                intent = new Intent(Mypage.this, MainActivity.class);
+            } else if (itemId == R.id.navigation_people) {
+                intent = new Intent(Mypage.this, ActivityContainer.class);
+            } else if (itemId == R.id.navigation_mypage) {
+                return true;
             }
+            if (intent != null) {
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                return true;
+            }
+            return false;
         });
 
+        // 현재 탭 선택
         bottomNavigationView.setSelectedItemId(R.id.navigation_mypage);
     }
 

@@ -15,7 +15,7 @@ public interface UserService {
     @POST("/sign-up")
     Call<UserSignUpResponse> signUp(@Body User signUpRequest);
 
-    /*@GET("/member")
+    @GET("/member")
     Call<UserProfileResponse> getUserProfile();
 
     @PATCH("/member/password")
@@ -25,7 +25,7 @@ public interface UserService {
     Call<Void> updateNickName(@Body NickNameUpdate nickNameUpdate);
 
     @DELETE("/member")
-    Call<Void> deleteUser();*/
+    Call<Void> deleteUser();
 
     @GET("/detect")
     Call<ResponseBody> getProtectedTargetImage(@Query("targetId") int targetId);
